@@ -3,16 +3,18 @@
 
 <h1>Flower List</h1>
 
-{% for flower in flowers %}
+{% for flower in object_list %}
     <div class="card">
         <a href="{% url 'detail' flower.id %}">
             <div class="card-content">
                 <span class="card-title">{{ flower.name }}</span>
                 <p>ID: {{ flower.id }}</p>
-                <p>Breed: {{ flower.breed }}</p>
+                <p>Specie: {{ flower.species }}</p>
                 <p>Description: {{ flower.description }}</p>
             </div>
         </a>
+        <a href="/flowers/{{flower.id}}/delete" class="btn waves-effect waves-light">Delete</a>
+      <a href="/flowers/{{flower.id}}/edit" class="btn waves-effect waves-light">Update</a>
     </div>
 {% endfor %}
 
