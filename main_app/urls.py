@@ -10,7 +10,7 @@ urlpatterns = [
     path('flowers/', views.GetAll.as_view(), name='flowers'),
 
     # Get One
-    path('flowers/<int:pk>/', views.FlowerDetail.as_view(), name='detail'),
+    path('flowers/<int:pk>/', views.FlowerDetail, name='detail'),
 
     # Update
     path('flowers/<int:pk>/edit/', views.EditFlower.as_view(), name='edit'),
@@ -18,5 +18,6 @@ urlpatterns = [
     # Delete
     path('flowers/<int:pk>/delete/', views.DeleteFlower.as_view(), name='delete'),
 
-    
+    # post meal schedule
+    path('flowers/<int:pk>/add_meal/', views.add_meal, name='add_meal'),
 ]
