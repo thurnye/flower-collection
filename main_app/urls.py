@@ -7,7 +7,7 @@ urlpatterns = [
     path('flowers/add-flower', views.CreateFlower.as_view(), name='add_flower'),
     
     # Get all flowers
-    path('flowers/', views.GetAll.as_view(), name='flowers'),
+    path('flowers/', views.GetAll, name='flowers'),
 
     # Get One
     path('flowers/<int:pk>/', views.FlowerDetail, name='detail'),
@@ -37,4 +37,7 @@ urlpatterns = [
     path('vase/<int:pk>/update/', views.VaseUpdate.as_view(), name='vase_update'),
 
     path('vase/<int:pk>/delete/', views.VaseDelete.as_view(), name='vase_delete'),
+
+    # sign up new user
+    path('accounts/signup/', views.signup, name='signup'),
 ]

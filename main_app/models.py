@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 
@@ -28,6 +29,8 @@ class Flower (models.Model) :
     description =  models.TextField(max_length=250)
     # Add the M:M relationship
     vases = models.ManyToManyField(Vase)
+    # Link the user
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
     def __str__(self):

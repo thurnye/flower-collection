@@ -3,6 +3,8 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Flower, Vase
 from .forms import MealForm
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 
 
@@ -14,14 +16,22 @@ def home(request):
 class CreateFlower(CreateView):
     model = Flower
     template_name = 'flower/add_form.html'
-    fields = '__all__'
-    success_url = '/flowers/'
+    fields = ['name', 'species', 'description']
+  # This inherited method is called when a
+  # valid cat form is being submitted
+    def form_valid(self, form):
+      # Assign the logged in user (self.request.user)
+      form.instance.user = self.request.user  # form.instance is the cat
+      # Let the CreateView do its job as usual
+      return super().form_valid(form)
 
 
 # Get All
-class GetAll(ListView):
+def GetAll(request):
     model= Flower
-    template_name = 'flower/flowers.html'
+    flowers = Flower.objects.filter(user=request.user)
+    # You could also retrieve the logged in user's flowers like this
+    return render(request, 'flower/flowers.html', { 'flowers': flowers })
 
 # Get One
 def FlowerDetail(request, pk):
@@ -109,3 +119,22 @@ class VaseDelete(DeleteView):
   template_name = 'flower/vase_delete.html'
   success_url = '/vase/'
 
+# sign up new user
+def signup(request):
+  error_message = ''
+  if request.method == 'POST':
+    # This is how to create a 'user' form object
+    # that includes the data from the browser
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      # This will add the user to the database
+      user = form.save()
+      # This is how we log a user in via code
+      login(request, user)
+      return redirect('index')
+    else:
+      error_message = 'Invalid sign up - try again'
+  # A bad POST or a GET request, so render signup.html with an empty form
+  form = UserCreationForm()
+  context = {'form': form, 'error_message': error_message}
+  return render(request, 'registration/signup.html', context)
