@@ -20,4 +20,21 @@ urlpatterns = [
 
     # post meal schedule
     path('flowers/<int:pk>/add_meal/', views.add_meal, name='add_meal'),
+
+    # Create Vase
+    path('vase/create/', views.VaseCreate.as_view(), name='vase_create'),
+
+    # associate a Vase with a flower (M:M)
+    path('cats/<int:flower_id>/assoc_vase/<int:vase_id>/', views.assoc_vase, name='assoc_vase'),
+    
+    # unassociate a Vase and flower
+    path('cats/<int:flower_id>/unassoc_vase/<int:vase_id>/', views.unassoc_vase, name='unassoc_vase'),
+
+    path('vase/', views.VaseList.as_view(), name='vase_index'),
+
+    path('vase/<int:pk>/', views.VaseDetail.as_view(), name='vase_detail'),
+
+    path('vase/<int:pk>/update/', views.VaseUpdate.as_view(), name='vase_update'),
+
+    path('vase/<int:pk>/delete/', views.VaseDelete.as_view(), name='vase_delete'),
 ]

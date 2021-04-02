@@ -3,20 +3,31 @@ from django.urls import reverse
 
 
 
-GROWTH = (
-    ('SL', 'Sunlight'),
-    ('PT', 'Proper Temperature'),
-    ('MT', 'Moisture'),
-    ('A', 'Air'),
-    ('NT', 'Nutrients'),
-)
 
 
-# Create your models here.
+
+
+
+# Vase Model
+class Vase (models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('vase_detail', kwargs={'pk': self.id})
+
+
+
+# Flower Model
 class Flower (models.Model) :
     name =  models.CharField(max_length=50)
     species =  models.CharField(max_length=50)
     description =  models.TextField(max_length=250)
+    # Add the M:M relationship
+    vases = models.ManyToManyField(Vase)
 
 
     def __str__(self):
@@ -26,7 +37,18 @@ class Flower (models.Model) :
     def get_absolute_url(self):
         return reverse('detail', kwargs={'pk': self.id})    
 
-# Add the new Model for the meal
+
+
+
+
+# Meal Model
+GROWTH = (
+    ('SL', 'Sunlight'),
+    ('PT', 'Proper Temperature'),
+    ('MT', 'Moisture'),
+    ('A', 'Air'),
+    ('NT', 'Nutrients'),
+)
 class Meal(models.Model):
     date = models.DateField('Period')
     growth = models.CharField(
@@ -39,7 +61,9 @@ class Meal(models.Model):
     def __str__(self):
     # Nice method for obtaining the friendly value of a Field.choice
         return f"{self.get_growth_display()} on {self.date}"
-        
+
     # change the default sort
     class Meta:
         ordering = ['-date']
+
+

@@ -17,6 +17,7 @@
     </div>
   </div>
 
+  <!-- Add Meals for growth  -->
   <div class="col s6">
     <form action="{% url 'add_meal' flower.id %}" method="post">
       {% csrf_token %}
@@ -40,6 +41,53 @@
   
 </div>
     
+
+<!-- list Flower Vase -->
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ flower.name }}'s Flower Vase</h3>
+    {% if flower.vases.count %}
+      {% for vase in flower.vases.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color:{{ vase.color }}">{{ vase.color }}</span> {{ vase.name }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No vases yet, please add some</h5>
+    {% endif %}
+  </div>
+
+  <!-- list of all vase in inventory -->
+  <div class="col s6">
+    <h3>Available Vases</h3>
+    {% if vases.count %}
+      {% for vase in vases.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ vase.color }}">{{ vase.color }}</span> {{ vase.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_vase' flower.id vase.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{flower.name}} Already Has All vases Available</h5>
+    {% endif %}
+  </div>
+</div>
+
+
 <script>
   var dateEl = document.getElementById('id_date');
   M.Datepicker.init(dateEl, {

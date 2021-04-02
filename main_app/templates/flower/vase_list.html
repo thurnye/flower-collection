@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Vase List</h1>
+
+{% for vase in vase_list %}
+  <a href="{% url 'vase_detail' vase.id %}">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ vase.name }}</span>
+            <p>Color: {{ vase.color }}</p>
+        </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}
